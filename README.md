@@ -16,18 +16,12 @@ This is a simple CLI tool written in Go that allows users to search for Magic: T
 
 ## Installation
 
-1. Clone the repository to your local machine.
+Clone the repository to your local machine.
 
-   ```bash
-   git clone https://github.com/remyeik/mtgCardDisplay
-   cd mtgCardDisplay
-   ```
-
-2. Install dependencies (this project uses Go's built-in package manager).
-
-   ```bash
-   go mod tidy
-   ```
+```bash
+git clone https://github.com/remyeik/mtgCardDisplay
+cd mtgCardDisplay
+```
 
 ## Usage
 
