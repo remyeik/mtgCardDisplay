@@ -1,82 +1,85 @@
-Scryfall Card Search CLI
+# Scryfall Card Search CLI
 
-This is a simple CLI tool written in Go that allows users to search for Magic: The Gathering cards using the Scryfall API. The application allows users to search for cards, choose from multiple search results, and view full details of a selected card.
-Features
+This is a simple CLI tool written in Go that allows users to search for Magic: The Gathering cards using the [Scryfall API](https://scryfall.com/docs/api). The application allows users to search for cards, choose from multiple search results, and view full details of a selected card.
 
-    Search for cards by a query string (fuzzy search).
+## Features
 
-    Display a list of matching cards with basic details such as the card name, set, and more.
+- **Search for cards** by a query string (fuzzy search).
+- **Display a list of matching cards** with basic details such as the card name, set, and more.
+- **Select a card** from the search results.
+- **Display full card details**, including mana cost, card type, oracle text, set, image URL, and Scryfall URL.
 
-    Select a card from the search results.
+## Requirements
 
-    Display full card details, including mana cost, card type, oracle text, set, image URL, and Scryfall URL.
+- Go 1.16+ (The code uses Go modules, so ensure Go is installed and set up properly).
+- An internet connection to query the Scryfall API.
 
-Requirements
+## Installation
 
-    Go 1.16+ (The code uses Go modules, so ensure Go is installed and set up properly).
+1. Clone the repository to your local machine.
 
-    An internet connection to query the Scryfall API.
+   ```bash
+   git clone https://github.com/remyeik/mtgCardDisplay
+   cd mtgCardDisplay
+   ```
 
-Installation
+2. Install dependencies (this project uses Go's built-in package manager).
 
-    Clone the repository to your local machine.
+   ```bash
+   go mod tidy
+   ```
 
-git clone https://github.com/your-username/scryfall-card-search-cli.git
-cd scryfall-card-search-cli
-
-Install dependencies (this project uses Go's built-in package manager).
-
-    go mod tidy
-
-Usage
+## Usage
 
 1. Run the CLI tool:
 
-After you have the code set up, run the application with a search query:
+   After you have the code set up, run the application with a search query:
 
-go run main.go "lightning bolt"
+   ```bash
+   go run main.go "lightning bolt"
+   ```
 
-This will search for Magic: The Gathering cards matching "lightning bolt" and display a list of matching results. 2. Choose a card:
+   This will search for Magic: The Gathering cards matching "lightning bolt" and display a list of matching results.
 
-The application will show a numbered list of matching cards. You will be prompted to enter the number corresponding to the card you want to see more details about.
+2. Choose a card:
 
-Example output:
+   The application will show a numbered list of matching cards. You will be prompted to enter the number corresponding to the card you want to see more details about.
 
-Found the following cards:
+   Example output:
 
-1. Lightning Bolt - Alpha
-2. Lightning Bolt - Beta
-3. Lightning Bolt - Unlimited
+   ```
+   Found the following cards:
+   1. Lightning Bolt - Alpha
+   2. Lightning Bolt - Beta
+   3. Lightning Bolt - Unlimited
 
-Enter the number of the card you want to view: 1
+   Enter the number of the card you want to view: 1
 
-🃏 Name: Lightning Bolt
-💧 Mana Cost: {R}
-📜 Type: Instant
-📖 Oracle Text:Lightning Bolt deals 3 damage to any target.
-📦 Set: Alpha
-🖼️ Image: https://cards.scryfall.io/normal/front/4/0/40c01ff9-...
-🔗 URL: https://scryfall.com/card/lea/163/lightning-bolt
+   🃏 Name:       Lightning Bolt
+   💧 Mana Cost:  {R}
+   📜 Type:       Instant
+   📖 Oracle Text:Lightning Bolt deals 3 damage to any target.
+   📦 Set:        Alpha
+   🖼️ Image:      https://cards.scryfall.io/normal/front/4/0/40c01ff9-...
+   🔗 URL:        https://scryfall.com/card/lea/163/lightning-bolt
+   ```
 
-How It Works
+## How It Works
 
-    The application uses the Scryfall API to search for cards using a query string.
+- The application uses the Scryfall API to search for cards using a query string.
+- Once the search is complete, it displays the cards that match your query.
+- After selecting a card, it fetches detailed information about the selected card and displays it in the terminal.
 
-    Once the search is complete, it displays the cards that match your query.
+## Code Structure
 
-    After selecting a card, it fetches detailed information about the selected card and displays it in the terminal.
+- `main.go`: The main application file containing logic for querying the Scryfall API and displaying card details.
+- `Card struct`: Defines the structure for a card, including its name, mana cost, set, and more.
+- `SearchResponse struct`: Defines the structure for the API response that contains the list of matching cards.
 
-Code Structure
-
-    main.go: The main application file containing logic for querying the Scryfall API and displaying card details.
-
-    Card struct: Defines the structure for a card, including its name, mana cost, set, and more.
-
-    SearchResponse struct: Defines the structure for the API response that contains the list of matching cards.
-
-Contributing
+## Contributing
 
 If you would like to contribute to this project, feel free to fork the repository and submit a pull request. Contributions are always welcome!
-License
+
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
