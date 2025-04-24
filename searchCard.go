@@ -10,89 +10,94 @@ import (
 )
 
 type Card struct {
-	Name        string `json:"name"`
-	ManaCost    string `json:"mana_cost"`
-	TypeLine    string `json:"type_line"`
-	OracleText  string `json:"oracle_text"`
-	SetName     string `json:"set_name"`
-	ScryfallURI string `json:"scryfall_uri"`
-	ImageUris   struct {
+	Name       string `json:"name"`
+	ManaCost   string `json:"mana_cost"`
+	TypeLine   string `json:"type_line"`
+	OracleText string `json:"oracle_text"`
+	SetName    string `json:"set_name"`
+	ImageUris  struct {
 		Normal string `json:"normal"`
 	} `json:"image_uris"`
+	ScryfallURI string `json:"scryfall_uri"`
 }
 
 type SearchResponse struct {
 	Data []Card `json:"data"`
 }
 
-func main() {
-	// Ensure the user has input a search string
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <search query>")
-		return
-	}
-
-	// Build the search query from the arguments
-	query := strings.Join(os.Args[1:], " ")
-	apiURL := "https://api.scryfall.com/cards/search?q=" + strings.ReplaceAll(query, " ", "+")
-
-	// Fetch data from Scryfall API
-	resp, err := http.Get(apiURL)
+func searchCard(query string) ([]Card, error) {
+	url := fmt.Sprintf("https://api.scryfall.com/cards/search?q=%s", query)
+	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Println("Error fetching data:", err)
-		return
+		return nil, err
 	}
 	defer resp.Body.Close()
 
-	// Check if the response is valid
 	if resp.StatusCode != 200 {
-		fmt.Printf("Error: Unable to fetch data. Status code: %d\n", resp.StatusCode)
-		return
+		return nil, fmt.Errorf("error: %s", resp.Status)
 	}
 
-	// Read and parse the JSON response
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response:", err)
-		return
+		return nil, err
 	}
 
-	// Parse the JSON data into the struct
-	var searchResp SearchResponse
-	err = json.Unmarshal(body, &searchResp)
+	var result SearchResponse
+	err = json.Unmarshal(body, &result)
 	if err != nil {
-		fmt.Println("Error decoding JSON:", err)
+		return nil, err
+	}
+
+	return result.Data, nil
+}
+
+func displayCardDetails(card Card) {
+	fmt.Printf("🃏 Name:       %s\n", card.Name)
+	fmt.Printf("💧 Mana Cost:  %s\n", card.ManaCost)
+	fmt.Printf("📜 Type:       %s\n", card.TypeLine)
+	fmt.Printf("📖 Oracle Text: %s\n", card.OracleText)
+	fmt.Printf("📦 Set:        %s\n", card.SetName)
+	fmt.Printf("🖼️ Image:      %s\n", card.ImageUris.Normal)
+	fmt.Printf("🔗 URL:        %s\n", card.ScryfallURI)
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: go run main.go <card-name>")
 		return
 	}
 
-	// Check if there are any results
-	if len(searchResp.Data) == 0 {
-		fmt.Println("No cards found for your search.")
+	query := strings.Join(os.Args[1:], " ")
+	cards, err := searchCard(query)
+	if err != nil {
+		fmt.Println("Error searching cards:", err)
 		return
 	}
 
-	// Display search results
-	fmt.Println("\nFound the following cards:")
-	for i, card := range searchResp.Data {
+	if len(cards) == 0 {
+		fmt.Println("No cards found.")
+		return
+	}
+
+	// If exactly one card is found, display it immediately
+	if len(cards) == 1 {
+		displayCardDetails(cards[0])
+		return
+	}
+
+	// Otherwise, show the list of matching cards and let the user choose
+	fmt.Println("Found the following cards:")
+	for i, card := range cards {
 		fmt.Printf("%d. %s - %s\n", i+1, card.Name, card.SetName)
 	}
 
-	// Prompt user to choose a card
-	fmt.Print("\nEnter the number of the card you want to view: ")
 	var choice int
-	_, err = fmt.Scanf("%d", &choice)
-	if err != nil || choice < 1 || choice > len(searchResp.Data) {
-		fmt.Println("Invalid choice. Exiting.")
+	fmt.Print("Enter the number of the card you want to view: ")
+	_, err = fmt.Scan(&choice)
+	if err != nil || choice < 1 || choice > len(cards) {
+		fmt.Println("Invalid choice.")
 		return
 	}
 
-	// Display the full information of the selected card
-	selectedCard := searchResp.Data[choice-1]
-	fmt.Printf("\n🃏 Name:       %s\n", selectedCard.Name)
-	fmt.Printf("💧 Mana Cost:  %s\n", selectedCard.ManaCost)
-	fmt.Printf("📜 Type:       %s\n", selectedCard.TypeLine)
-	fmt.Printf("📖 Oracle Text:%s\n", selectedCard.OracleText)
-	fmt.Printf("📦 Set:        %s\n", selectedCard.SetName)
-	fmt.Printf("🖼️ Image:      %s\n", selectedCard.ImageUris.Normal)
-	fmt.Printf("🔗 URL:        %s\n", selectedCard.ScryfallURI)
+	displayCardDetails(cards[choice-1])
 }
