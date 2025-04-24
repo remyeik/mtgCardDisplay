@@ -18,7 +18,8 @@ type Card struct {
 	ImageUris  struct {
 		Normal string `json:"normal"`
 	} `json:"image_uris"`
-	ScryfallURI string `json:"scryfall_uri"`
+	ScryfallURI string            `json:"scryfall_uri"`
+	Legalities  map[string]string `json:"legalities"`
 }
 
 type SearchResponse struct {
@@ -59,6 +60,16 @@ func displayCardDetails(card Card) {
 	fmt.Printf("📦 Set:        %s\n", card.SetName)
 	fmt.Printf("🖼️ Image:      %s\n", card.ImageUris.Normal)
 	fmt.Printf("🔗 URL:        %s\n", card.ScryfallURI)
+
+	// Check legality for Commander format
+	if commanderLegality, ok := card.Legalities["commander"]; ok && commanderLegality != "legal" {
+		fmt.Printf("⚖️ Commander Legal: %s\n", commanderLegality)
+	}
+
+	// Check legality for Standard format
+	if standardLegality, ok := card.Legalities["standard"]; ok && standardLegality != "legal" {
+		fmt.Printf("⚖️ Standard Legal: %s\n", standardLegality)
+	}
 }
 
 func main() {
