@@ -54,7 +54,7 @@ func searchCard(query string) ([]Card, error) {
 
 func displayCardDetails(card Card) {
 	fmt.Printf("🃏 Name:       %s\n", card.Name)
-	fmt.Printf("💧 Mana Cost:  %s\n", card.ManaCost)
+	fmt.Printf("🌄 Mana Cost:  %s\n", card.ManaCost)
 	fmt.Printf("📜 Type:       %s\n", card.TypeLine)
 	fmt.Printf("📖 Oracle Text: %s\n", card.OracleText)
 	fmt.Printf("📦 Set:        %s\n", card.SetName)
