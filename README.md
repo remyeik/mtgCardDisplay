@@ -4,8 +4,8 @@ This is a simple CLI tool for looking up Magic: The Gathering cards using the [S
 
 ## Features
 
-- \*\*Search for cards by a query string (fuzzy search).
-- Display a list of matching cards\*\* with basic details such as the card name, set, and more.
+- Search for cards by a query string (fuzzy search).
+- Display a list of matching cards with basic details such as the card name, set, and more.
 - **Select a card** from the search results.
 - **Display full card details**, including mana cost, card type, oracle text, set, image URL, and Scryfall URL.
 
