@@ -38,7 +38,7 @@ This is a simple CLI tool for looking up Magic: The Gathering cards using the [S
 Once installed, you can use the `mtg` command from anywhere in your terminal:
 
 ```bash
-mtg "lightning bolt"
+mtg "sol ring"
 ```
 
 This will search for Magic: The Gathering cards matching "lightning bolt" and display a list of matching results.
