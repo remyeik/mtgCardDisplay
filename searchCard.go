@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 )
@@ -27,8 +28,10 @@ type SearchResponse struct {
 }
 
 func searchCard(query string) ([]Card, error) {
-	url := fmt.Sprintf("https://api.scryfall.com/cards/search?q=%s", query)
-	resp, err := http.Get(url)
+	encodedQuery := url.QueryEscape(query)
+	apiURL := fmt.Sprintf("https://api.scryfall.com/cards/search?q=%s", encodedQuery)
+
+	resp, err := http.Get(apiURL)
 	if err != nil {
 		return nil, err
 	}
