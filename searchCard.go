@@ -77,7 +77,7 @@ func displayCardDetails(card Card) {
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <card-name>")
+		fmt.Println("Usage: Search for a card by name or keyword. Example: mtg lightning bolt")
 		return
 	}
 
