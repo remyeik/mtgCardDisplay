@@ -55,6 +55,7 @@ func searchCard(query string) ([]Card, error) {
 	return result.Data, nil
 }
 
+// displayCardDetails function  
 func displayCardDetails(card Card) {
 	fmt.Printf("🃏 Name:       %s\n", card.Name)
 	fmt.Printf("🌄 Mana Cost:  %s\n", card.ManaCost)
