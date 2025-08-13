@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+// Card struct  
 type Card struct {
 	Name       string `json:"name"`
 	ManaCost   string `json:"mana_cost"`
@@ -27,11 +28,24 @@ type SearchResponse struct {
 	Data []Card `json:"data"`
 }
 
+// searchCard function  
 func searchCard(query string) ([]Card, error) {
 	encodedQuery := url.QueryEscape(query)
 	apiURL := fmt.Sprintf("https://api.scryfall.com/cards/search?q=%s", encodedQuery)
 
-	resp, err := http.Get(apiURL)
+	// Create a new request
+	req, err := http.NewRequest("GET", apiURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// Required headers
+	req.Header.Set("User-Agent", "GrimoireCLI/1.0")
+	req.Header.Set("Accept", "application/json")
+
+	// Create client and execute request
+	client := &http.Client{}
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -55,8 +69,9 @@ func searchCard(query string) ([]Card, error) {
 	return result.Data, nil
 }
 
-// displayCardDetails function  
+// displayCardDetails function
 func displayCardDetails(card Card) {
+	fmt.Println("\033[4mGrimoire - MTG Card Search\033[0m")
 	fmt.Printf("🃏 Name:       %s\n", card.Name)
 	fmt.Printf("🌄 Mana Cost:  %s\n", card.ManaCost)
 	fmt.Printf("📜 Type:       %s\n", card.TypeLine)
@@ -78,18 +93,22 @@ func displayCardDetails(card Card) {
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: Search for a card by name or keyword. Example: mtg lightning bolt")
+		fmt.Println("\033[4mGrimoire - MTG Card Search\033[0m")
+		fmt.Println("Please provide a card name or keyword to search for.")
+		fmt.Println("Usage example: mtg lightning bolt")
 		return
 	}
 
 	query := strings.Join(os.Args[1:], " ")
 	cards, err := searchCard(query)
 	if err != nil {
+		fmt.Println("\033[4mGrimoire - MTG Card Search\033[0m")
 		fmt.Println("Error searching cards:", err)
 		return
 	}
 
 	if len(cards) == 0 {
+		fmt.Println("\033[4mGrimoire - MTG Card Search\033[0m")
 		fmt.Println("No cards found.")
 		return
 	}
@@ -101,6 +120,7 @@ func main() {
 	}
 
 	// Otherwise, show the list of matching cards and let the user choose
+	fmt.Println("\033[4mGrimoire - MTG Card Search\033[0m")
 	fmt.Println("Found the following cards:")
 	for i, card := range cards {
 		fmt.Printf("%d. %s - %s\n", i+1, card.Name, card.SetName)

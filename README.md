@@ -1,4 +1,4 @@
-# Scryfall Card Search CLI
+# GrimoireCLI
 
 This is a simple CLI tool for looking up Magic: The Gathering cards using the [Scryfall API](https://scryfall.com/docs/api).
 
@@ -14,14 +14,14 @@ This is a simple CLI tool for looking up Magic: The Gathering cards using the [S
 1. **Clone the repository** (or download the source code):
 
    ```bash
-   git clone https://github.com/remyeik/mtgCardDisplay.git
-   cd scryfall-cli
+   git clone https://github.com/remyeik/grimoireCLI.git
+   cd grimoireCLI
    ```
 
 2. **Build and install the application**:
 
    ```bash
-   go build -o mtg searchCard.go
+   go build -o mtg grimoireCLI.go
    sudo mv mtg /usr/local/bin/
    sudo chmod +x /usr/local/bin/mtg
    ```
