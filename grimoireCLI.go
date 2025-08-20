@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-// Card struct  
+// Card struct
 type Card struct {
 	Name       string `json:"name"`
 	ManaCost   string `json:"mana_cost"`
@@ -28,7 +28,7 @@ type SearchResponse struct {
 	Data []Card `json:"data"`
 }
 
-// searchCard function  
+// searchCard function
 func searchCard(query string) ([]Card, error) {
 	encodedQuery := url.QueryEscape(query)
 	apiURL := fmt.Sprintf("https://api.scryfall.com/cards/search?q=%s", encodedQuery)
